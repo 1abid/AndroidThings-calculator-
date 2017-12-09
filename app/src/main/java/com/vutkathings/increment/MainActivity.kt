@@ -1,12 +1,11 @@
 package com.vutkathings.increment
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import android.widget.ArrayAdapter
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.nearby.messages.MessageListener
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,7 +14,20 @@ class MainActivity : AppCompatActivity() , GoogleApiClient.ConnectionCallbacks ,
     /**
      * The entry point to Google Play Services.
      */
-    private lateinit var mGoogleApiClient : GoogleApiClient
+    private var mGoogleApiClient : GoogleApiClient? = null
+
+    /**
+     * A [MessageListener] for processing messages from nearby devices.
+     */
+    private var messageListener : MessageListener ? = null
+
+    /**
+     * Adapter for working with messages from nearby publishers.
+     */
+    private var nearbyDeviceArrayAdapter : ArrayAdapter<String> ? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
