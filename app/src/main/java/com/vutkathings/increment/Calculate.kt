@@ -17,13 +17,12 @@ class Calculate : BaseObservable() , Serializable {
     private val utf8 :String = "UTF-8"
 
     companion object {
-        fun builder (uuid:String , operandOne:Int , operandTwo:Int , operator: Operator , result:Int) : Calculate {
+        fun builder (uuid:String , operandOne:Int , operandTwo:Int , operator: Operator ) : Calculate {
             val message = Calculate()
             message.uuid = uuid
             message.operandOne = operandOne
             message.operandTwo = operandTwo
             message.operator = operator
-            message.result = result
 
             return message
         }
@@ -61,6 +60,7 @@ class Calculate : BaseObservable() , Serializable {
         field = value
         notifyPropertyChanged(BR.result)
     }
+
 
 
     fun toMessage() : Message = Message(Gson().toJson(this).toByteArray(Charset.forName(utf8)))
