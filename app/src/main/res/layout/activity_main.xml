@@ -4,16 +4,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="calculate"
+            type="com.vutkathings.increment.Calculate"></variable>
+    </data>
+
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.vutkathings.increment.MainActivity">
+        tools:context="com.vutkathings.increment.MainActivity"
+        android:id="@+id/root">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/content_main" />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="110dp"
+                android:layout_height="38dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="operand one"
+                android:inputType="number"
+                android:padding="5dp"
+                android:text="@={calculate.operandOne}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.235" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="116dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="operand two"
+                android:inputType="number"
+                android:padding="5dp"
+                android:text="@={calculate.operandTwo}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.757"
+                app:layout_constraintStart_toEndOf="@+id/editText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.235" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="51dp"
+                android:layout_height="42dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editText2"
+                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintStart_toEndOf="@+id/editText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.236"/>
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="176dp"
+                android:layout_height="64dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="result"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="@={calculate.result}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.441" />
+        </android.support.constraint.ConstraintLayout>
+
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_minus"
@@ -32,7 +118,6 @@
             android:layout_gravity="top|start"
             android:layout_margin="@dimen/fab_margin"
             android:tint="@android:color/white"
-            app:layout_anchor="@+id/include"
             app:srcCompat="@drawable/ic_multiply"
             tools:ignore="VectorDrawableCompat" />
 
@@ -43,7 +128,6 @@
             android:layout_gravity="top|end"
             android:layout_margin="@dimen/fab_margin"
             android:tint="@android:color/white"
-            app:layout_anchor="@+id/include"
             app:layout_anchorGravity="right|top"
             app:srcCompat="@drawable/ic_divide"
             tools:ignore="VectorDrawableCompat" />

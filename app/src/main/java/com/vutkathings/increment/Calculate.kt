@@ -17,12 +17,18 @@ class Calculate : BaseObservable() , Serializable {
     private val utf8 :String = "UTF-8"
 
     companion object {
-        fun builder (uuid:String , operandOne:Int , operandTwo:Int , operator: Operator ) : Calculate {
+        fun builder (uuid:String , operandOne:String , operandTwo:String , operator: Operator ) : Calculate {
             val message = Calculate()
             message.uuid = uuid
             message.operandOne = operandOne
             message.operandTwo = operandTwo
-            message.operator = operator
+
+            when(operator){
+                Operator.OPERATOR_PLUS -> message.operator = "Plus"
+                Operator.OPERATOR_MINUS -> message.operator = "Minus"
+                Operator.OPERATOR_MULTIPLY -> message.operator = "Multiply"
+                else -> message.operator = "Divide"
+            }
 
             return message
         }
@@ -32,7 +38,7 @@ class Calculate : BaseObservable() , Serializable {
     private var uuid:String? = null
 
     @Bindable
-    private var operandOne:Int ? = null
+    var operandOne:String ? = null
     set(value) {
         field = value
         notifyPropertyChanged(BR.operandOne)
@@ -40,7 +46,7 @@ class Calculate : BaseObservable() , Serializable {
 
 
     @Bindable
-    private var operandTwo : Int ? = null
+    var operandTwo : String ? = null
     set(value) {
         field = value
         notifyPropertyChanged(BR.operandTwo)
@@ -48,14 +54,14 @@ class Calculate : BaseObservable() , Serializable {
 
 
     @Bindable
-    private var operator : Operator ? = null
+    var operator : String ? = null
     set(value) {
         field = value
         notifyPropertyChanged(BR.operator)
     }
 
     @Bindable
-    private var result : Int ? = null
+    var result : String ? = null
     set(value) {
         field = value
         notifyPropertyChanged(BR.result)

@@ -1,11 +1,13 @@
 package com.vutkathings.increment
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.nearby.messages.MessageListener
+import com.vutkathings.increment.databinding.ActivityMainBinding
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,14 +29,26 @@ class MainActivity : AppCompatActivity() , GoogleApiClient.ConnectionCallbacks ,
     private var nearbyDeviceArrayAdapter : ArrayAdapter<String> ? = null
 
 
+    private val savedInstance = Calculate::class.java.simpleName
 
+    private lateinit var calculation : Calculate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this , R.layout.activity_main)
+        binding.calculate = calculation
+
+        calculation = savedInstanceState?.get(savedInstance) as Calculate
 
         buildGoogleApiClient()
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putSerializable(savedInstance , calculation)
     }
 
     private fun buildGoogleApiClient() {
