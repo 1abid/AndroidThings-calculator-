@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
      */
     private var messageListener: MessageListener? = null
 
-    /**
-     * Adapter for working with messages from nearby publishers.
-     */
-    private var nearbyDeviceArrayAdapter: ArrayAdapter<String>? = null
-
 
     /**
      * One minutes.
@@ -66,23 +61,28 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
 
         setOperatorName(calculation.operator)
 
-        buildGoogleApiClient()
+
 
         messageListener = object : MessageListener() {
             override fun onFound(message: Message) {
-                nearbyDeviceArrayAdapter?.let {
-                    Log.i(TAG, "message " + message.toString())
-                    it.add(Calculation.fromMessage(message).toString())
-                }
+                Calculation.fromMessage(message).toString()
+                Log.i(TAG , "message found "+calculation.operandOne)
             }
 
             override fun onLost(message: Message) {
-                nearbyDeviceArrayAdapter?.let {
-                    Log.i(TAG, "message " + message.toString())
-                    it.remove(Calculation.fromMessage(message).toString())
-                }
+                Log.i(TAG, "message lost " + message)
             }
         }
+
+        checkBox.setOnCheckedChangeListener({ _, isChecked ->
+            if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected)
+                if (isChecked)
+                    subscriberForMessage()
+                else
+                    unsubscribe()
+        })
+
+        buildGoogleApiClient()
 
     }
 
@@ -129,6 +129,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
                 .addConnectionCallbacks(this@MainActivity)
                 .enableAutoManage(this@MainActivity, this@MainActivity)
                 .build()
+
+
     }
 
     /**
@@ -169,7 +171,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
     private fun subscriberForMessage() {
         Log.i(TAG, "Subscribing")
 
-        nearbyDeviceArrayAdapter?.clear()
 
         val option: SubscribeOptions = SubscribeOptions.Builder().setStrategy(publishSubscriptionStrategy)
                 .setCallback(object : SubscribeCallback() {
@@ -177,14 +178,17 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
                         super.onExpired()
 
                         Log.i(TAG, "Subscription expired")
-                        runOnUiThread { Snackbar.make(resultTv, "Subscription expired", Snackbar.LENGTH_SHORT).show() }
+                        runOnUiThread {
+                            Snackbar.make(resultTv, "Subscription expired", Snackbar.LENGTH_SHORT).show()
+                            checkBox.isChecked = false
+                        }
                     }
                 }).build()
 
         Nearby.Messages.subscribe(mGoogleApiClient, messageListener, option)
                 .setResultCallback { status ->
                     if (status.isSuccess) {
-                        Log.i(TAG, "subscription was successful")
+                        Log.i(TAG, "subscription was successful" + status.statusMessage)
                         Snackbar.make(resultTv, "Subscription successful", Snackbar.LENGTH_SHORT).show()
                     } else {
                         Snackbar.make(resultTv, "Couldn't subscribe " + status, Snackbar.LENGTH_SHORT).show()
@@ -202,12 +206,22 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
         Nearby.Messages.unpublish(mGoogleApiClient, calculation.toMessage())
     }
 
+    /**
+     * Stops subscribing to messages from nearby devices.
+     */
+    private fun unsubscribe() {
+        Log.i(TAG, "Unsubscribing.")
+        Nearby.Messages.unsubscribe(mGoogleApiClient, messageListener)
+    }
+
 
     override fun onConnected(bundle: Bundle?) {
         Log.i(TAG, "GoogleApiClient connected")
 
-        if(mGoogleApiClient!=null && mGoogleApiClient!!.isConnected)
+        if (checkBox.isChecked)
             subscriberForMessage()
+
+        publishMessage()
 
         //Snackbar.make(operatorTv, "GoogleApiClient connected", Snackbar.LENGTH_SHORT).show()
     }
@@ -219,6 +233,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
         Log.i(TAG, "GoogleApiClient connection failed")
+        checkBox.isChecked = false
         //Snackbar.make(operatorTv, "connection Failed" + connectionResult.errorMessage, Snackbar.LENGTH_SHORT).show()
     }
 }

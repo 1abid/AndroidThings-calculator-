@@ -44,5 +44,5 @@ dependencies {
 
     kapt 'com.android.databinding:compiler:3.0.1'
     compile 'com.google.code.gson:gson:2.4'
-    compile 'com.google.android.gms:play-services-nearby:9.0.0'
+    compile 'com.google.android.gms:play-services-nearby:11.0.0'
 }

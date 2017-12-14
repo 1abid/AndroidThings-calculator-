@@ -30,10 +30,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
      */
     private var messageListener: MessageListener? = null
 
-    /**
-     * Adapter for working with messages from nearby publishers.
-     */
-    private var nearbyDeviceArrayAdapter: ArrayAdapter<String>? = null
 
 
     /**
@@ -67,23 +63,15 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
 
         setOperatorDrawable(calculation.operator)
 
-        buildGoogleApiClient()
-
 
         messageListener = object : MessageListener() {
             override fun onFound(message: Message) {
-                nearbyDeviceArrayAdapter?.let {
-
-                    it.add(Calculate.fromMessage(message).toString())
-
-                    resultTv.text = calculation.result
-                }
+                Calculate.fromMessage(message).toString()
+                resultTv.text = calculation.result
             }
 
             override fun onLost(message: Message) {
-                nearbyDeviceArrayAdapter?.let {
-                    it.remove(Calculate.fromMessage(message).toString())
-                }
+
             }
         }
 
@@ -94,6 +82,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
         fab_plus.setOnClickListener {
             publishMessage()
             calculation.operator = "Plus"
+            calculation.operandOne = operandOneET.text.toString()
+            calculation.operandTwo = operandTwoET.text.toString()
             setOperatorDrawable(calculation.operator)
         }
 
@@ -101,12 +91,16 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
             Log.i(TAG, "minus clicked")
             publishMessage()
             calculation.operator = "Minus"
+            calculation.operandOne = operandOneET.text.toString()
+            calculation.operandTwo = operandTwoET.text.toString()
             setOperatorDrawable(calculation.operator)
         }
 
         fab_multiply.setOnClickListener {
             publishMessage()
             calculation.operator = "Multiply"
+            calculation.operandOne = operandOneET.text.toString()
+            calculation.operandTwo = operandTwoET.text.toString()
             setOperatorDrawable(calculation.operator)
         }
 
@@ -119,10 +113,12 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
             }
             publishMessage()
             calculation.operator = "Divide"
+            calculation.operandOne = operandOneET.text.toString()
+            calculation.operandTwo = operandTwoET.text.toString()
             setOperatorDrawable(calculation.operator)
         }
 
-
+        buildGoogleApiClient()
     }
 
 
@@ -207,7 +203,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
      */
     private fun subscriberForMessage() {
         Log.i(TAG, "Subscribing")
-        nearbyDeviceArrayAdapter!!.clear()
 
         val option: SubscribeOptions = SubscribeOptions.Builder().setStrategy(publishSubscriptionStrategy)
                 .setCallback(object : SubscribeCallback() {
@@ -244,6 +239,9 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
     override fun onConnected(bundle: Bundle?) {
         Log.i(TAG, "GoogleApiClient connected")
         Snackbar.make(resultTv, "GoogleApiClient connected", Snackbar.LENGTH_SHORT).show()
+
+        publishMessage()
+        subscriberForMessage()
     }
 
     override fun onConnectionSuspended(i: Int) {

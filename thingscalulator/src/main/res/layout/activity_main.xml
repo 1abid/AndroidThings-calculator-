@@ -24,7 +24,8 @@
             app:layout_constraintHorizontal_bias="0.125"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.227" />
+            app:layout_constraintVertical_bias="0.227"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
         <TextView
             android:id="@+id/operandTwo"
@@ -40,7 +41,8 @@
             app:layout_constraintHorizontal_bias="0.686"
             app:layout_constraintStart_toEndOf="@+id/operandOne"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.225" />
+            app:layout_constraintVertical_bias="0.225"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
         <TextView
             android:id="@+id/operatorTv"
@@ -55,7 +57,8 @@
             app:layout_constraintHorizontal_bias="0.538"
             app:layout_constraintStart_toEndOf="@+id/operandOne"
             app:layout_constraintTop_toTopOf="@+id/operandTwo"
-            app:layout_constraintVertical_bias="0.175" />
+            app:layout_constraintVertical_bias="0.175"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
         <TextView
             android:id="@+id/resultTv"
@@ -71,7 +74,25 @@
             app:layout_constraintHorizontal_bias="0.44"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/operatorTv"
-            app:layout_constraintVertical_bias="0.327" />
+            app:layout_constraintVertical_bias="0.327"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="subscribe"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.524"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/resultTv"
+            app:layout_constraintVertical_bias="0.474"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
     </android.support.constraint.ConstraintLayout>
 </layout>
 
