@@ -23,7 +23,7 @@
 
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/operandOneET"
                 android:layout_width="110dp"
                 android:layout_height="38dp"
                 android:layout_marginBottom="8dp"
@@ -43,7 +43,7 @@
                 app:layout_constraintVertical_bias="0.235" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/operandTwoET"
                 android:layout_width="116dp"
                 android:layout_height="34dp"
                 android:layout_marginBottom="8dp"
@@ -58,7 +58,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.757"
-                app:layout_constraintStart_toEndOf="@+id/editText"
+                app:layout_constraintStart_toEndOf="@+id/operandOneET"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.235" />
 
@@ -72,14 +72,14 @@
                 android:layout_marginTop="8dp"
                 android:tint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editText2"
+                app:layout_constraintEnd_toStartOf="@+id/operandTwoET"
                 app:layout_constraintHorizontal_bias="0.571"
-                app:layout_constraintStart_toEndOf="@+id/editText"
+                app:layout_constraintStart_toEndOf="@+id/operandOneET"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.236"/>
 
-            <EditText
-                android:id="@+id/editText3"
+            <TextView
+                android:id="@+id/resultTv"
                 android:layout_width="176dp"
                 android:layout_height="64dp"
                 android:layout_marginBottom="8dp"
@@ -88,7 +88,6 @@
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="number"
-                android:hint="result"
                 android:padding="5dp"
                 android:gravity="center"
                 android:text="@={calculate.result}"
