@@ -14,9 +14,12 @@ import java.nio.charset.Charset
 
 class Calculate : BaseObservable() , Serializable {
 
-    private val utf8 :String = "UTF-8"
+
 
     companion object {
+
+        private val utf8 :String = "UTF-8"
+
         fun builder (uuid:String , operandOne:String , operandTwo:String , operator: Operator ) : Calculate {
             val message = Calculate()
             message.uuid = uuid
@@ -31,6 +34,14 @@ class Calculate : BaseObservable() , Serializable {
             }
 
             return message
+        }
+
+
+        fun fromMessage(message: Message) : Calculate{
+            val nearbyDeviceMessageString = String(message.content).trim { it <= ' ' }
+
+            return Gson().fromJson(String(nearbyDeviceMessageString.toByteArray(Charset.forName(utf8))),
+                    Calculate::class.java)
         }
     }
 
@@ -48,6 +59,7 @@ class Calculate : BaseObservable() , Serializable {
     @Bindable
     var operandTwo : String ? = null
     set(value) {
+
         field = value
         notifyPropertyChanged(BR.operandTwo)
     }
@@ -71,12 +83,7 @@ class Calculate : BaseObservable() , Serializable {
 
     fun toMessage() : Message = Message(Gson().toJson(this).toByteArray(Charset.forName(utf8)))
 
-    fun fromMessage(message: Message) : Calculate{
-        val nearbyDeviceMessageString = String(message.content).trim { it <= ' ' }
 
-        return Gson().fromJson(String(nearbyDeviceMessageString.toByteArray(Charset.forName(utf8))),
-                Calculate::class.java)
-    }
 
     override fun toString(): String {
         return "ID : $uuid \nOperator: $operator \nOperand One: $operandOne \nOperand Two: $operandTwo"
