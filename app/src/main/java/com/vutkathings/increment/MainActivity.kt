@@ -73,7 +73,10 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks, G
         messageListener = object : MessageListener() {
             override fun onFound(message: Message) {
                 nearbyDeviceArrayAdapter?.let {
+
                     it.add(Calculate.fromMessage(message).toString())
+
+                    resultTv.text = calculation.result
                 }
             }
 
